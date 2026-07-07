@@ -437,6 +437,11 @@ function CalendarTab() {
               <TodayTab logs={logs} setLogs={setLogs} currentPhase={currentPhase} cycleLength={cycleLength}/>
             </>}
 
+            {/* CALENDAR TAB */}
+            {activeTab==="calendar" && (
+              <CalendarTab />
+            )}
+            
             {/* HISTORY TAB */}
             {activeTab==="history" && <>
               <div style={{fontSize:13,color:"#999",marginBottom:16}}>Your last 60 logged days</div>
