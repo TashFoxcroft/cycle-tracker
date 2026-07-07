@@ -257,52 +257,28 @@ function CalendarTab() {
         🌸 {monthName} {year}
       </h2>
 
-     <div
-
-style={'{{'}
-
-display:"grid",
-
-gridTemplateColumns:"repeat(7, 1fr)",
-
-gap:8,
-
-textAlign:"center"
-
-{'}}'}
-
->
-
-{'{'}weekdays.map(day => (
-
 <div
-
-key={'{'}day{'}'}
-
-style={'{{'}
-
-fontSize:13,
-
-fontWeight:700,
-
-color:"#666",
-
-paddingBottom:8
-
-{'}}'}
-
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(7, 1fr)",
+    gap: 8,
+    textAlign: "center"
+  }}
 >
-
-{'{'}day{'}'}
-
-</div>
-
-)){'}'}
-
-</div>
+  {weekdays.map(day => (
+    <div
+      key={day}
+      style={{
+        fontSize: 13,
+        fontWeight: 700,
+        color: "#666",
+        paddingBottom: 8
+      }}
+    >
+      {day}
     </div>
-  );
-}
+  ))}
+</div>
     
     function HistoryTab({ logs, lastPeriod, cycleLength }) {
       const entries = Object.entries(logs)
