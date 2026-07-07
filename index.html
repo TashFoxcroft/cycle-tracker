@@ -227,21 +227,39 @@
     }
 
 function CalendarTab() {
+
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = today.getMonth();
+
+  const monthName = today.toLocaleString("default", {
+    month: "long"
+  });
+
   return (
     <div
       style={{
-        background: "#fff",
-        borderRadius: 14,
-        padding: 20,
-        border: "1px solid #eee",
-        textAlign: "center"
+        background:"#fff",
+        borderRadius:14,
+        padding:20,
+        border:"1px solid #eee"
       }}
     >
-      <h2 style={{marginBottom:10}}>🌸 My Cycle Calendar</h2>
 
-      <p style={{color:"#666"}}>
-        This is where our calendar will go.
+      <h2
+        style={{
+          textAlign:"center",
+          marginBottom:20
+        }}
+      >
+        🌸 {monthName} {year}
+      </h2>
+
+      <p style={{textAlign:"center"}}>
+        Our calendar is coming...
       </p>
+
     </div>
   );
 }
