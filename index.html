@@ -236,6 +236,7 @@ function CalendarTab() {
   const monthName = today.toLocaleString("default", {
     month: "long"
   });
+  const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   return (
     <div
@@ -256,10 +257,49 @@ function CalendarTab() {
         🌸 {monthName} {year}
       </h2>
 
-      <p style={{textAlign:"center"}}>
-        Our calendar is coming...
-      </p>
+     <div
 
+style={'{{'}
+
+display:"grid",
+
+gridTemplateColumns:"repeat(7, 1fr)",
+
+gap:8,
+
+textAlign:"center"
+
+{'}}'}
+
+>
+
+{'{'}weekdays.map(day => (
+
+<div
+
+key={'{'}day{'}'}
+
+style={'{{'}
+
+fontSize:13,
+
+fontWeight:700,
+
+color:"#666",
+
+paddingBottom:8
+
+{'}}'}
+
+>
+
+{'{'}day{'}'}
+
+</div>
+
+)){'}'}
+
+</div>
     </div>
   );
 }
