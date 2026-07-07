@@ -226,6 +226,26 @@
       );
     }
 
+function CalendarTab() {
+  return (
+    <div
+      style={{
+        background: "#fff",
+        borderRadius: 14,
+        padding: 20,
+        border: "1px solid #eee",
+        textAlign: "center"
+      }}
+    >
+      <h2 style={{marginBottom:10}}>📅 Calendar</h2>
+
+      <p style={{color:"#666"}}>
+        This is where our calendar will go.
+      </p>
+    </div>
+  );
+}
+    
     function HistoryTab({ logs, lastPeriod, cycleLength }) {
       const entries = Object.entries(logs)
         .filter(([,v]) => v && (v.flow!=null||v.mood||v.symptoms?.length||v.energy!=null||v.notes))
