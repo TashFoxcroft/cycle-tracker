@@ -129,25 +129,41 @@
       );
     }
 
-    function TodayTab({ logs, setLogs, currentPhase, cycleLength }) {
-      const today = toDateKey(new Date());
-      const log = logs[today] || {};
+function TodayTab({
+  logs,
+  setLogs,
+  currentPhase,
+  cycleLength,
+  selectedLogDate,
+  setSelectedLogDate
+}) {
 
-      function update(field, value) {
-        setLogs(prev => ({ ...prev, [today]: { ...prev[today], [field]: value } }));
+  const log = logs[selectedLogDate] || {};
+
+  function update(field, value) {
+    setLogs(prev => ({
+      ...prev,
+      [selectedLogDate]: {
+        ...prev[selectedLogDate],
+        [field]: value
       }
+    }));
+  }
 
-      function toggleSymptom(s) {
-        const current = log.symptoms || [];
-        const next = current.includes(s) ? current.filter(x=>x!==s) : [...current, s];
-        update("symptoms", next);
-      }
+  function toggleSymptom(s) {
+    const current = log.symptoms || [];
+    const next = current.includes(s)
+      ? current.filter(x => x !== s)
+      : [...current, s];
 
-      function toggleFlow(level) {
-        update("flow", log.flow === level ? null : level);
-      }
+    update("symptoms", next);
+  }
 
-      const phase = PHASES[currentPhase];
+  function toggleFlow(level) {
+    update("flow", log.flow === level ? null : level);
+  }
+
+  const phase = PHASES[currentPhase];
 
       return (
         <div>
@@ -470,7 +486,9 @@ function CalendarTab() {
       const [saveStatus, setSaveStatus] = useState(null);
       const [loaded, setLoaded] = useState(false);
       const [activeTab, setActiveTab] = useState("home");
-      const [logs, setLogs] = useState({});
+     const [selectedLogDate, setSelectedLogDate] = useState(
+    toDateKey(new Date())
+);
 
       useEffect(() => {
         try {
@@ -587,7 +605,14 @@ function CalendarTab() {
                 <div style={{fontSize:13,color:PHASES[currentPhase].color,fontWeight:700}}>{PHASES[currentPhase].emoji} {PHASES[currentPhase].name} phase · Day {day}</div>
                 <div style={{fontSize:12,color:"#666",marginTop:2}}>{new Date().toLocaleDateString("en-ZA",{weekday:"long",day:"numeric",month:"long"})}</div>
               </div>
-              <TodayTab logs={logs} setLogs={setLogs} currentPhase={currentPhase} cycleLength={cycleLength}/>
+             <TodayTab
+                logs={logs}
+                setLogs={setLogs}
+                currentPhase={currentPhase}
+                cycleLength={cycleLength}
+                selectedLogDate={selectedLogDate}
+                setSelectedLogDate={setSelectedLogDate}
+              />
             </>}
 
             {/* CALENDAR TAB */}
