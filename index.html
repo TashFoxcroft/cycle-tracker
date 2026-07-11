@@ -166,8 +166,45 @@ function TodayTab({
   const phase = PHASES[currentPhase];
 
       return (
-        <div>
-          {/* Flow / Period */}
+  <div>
+
+    <div
+      style={{
+        background:"#fff",
+        borderRadius:14,
+        border:"1px solid #eee",
+        padding:16,
+        marginBottom:14
+      }}
+    >
+      <div
+        style={{
+          fontSize:13,
+          fontWeight:700,
+          color:"#333",
+          marginBottom:12
+        }}
+      >
+        📅 Log Date
+      </div>
+
+      <input
+        type="date"
+        value={selectedLogDate}
+        onChange={(e)=>setSelectedLogDate(e.target.value)}
+        style={{
+          width:"100%",
+          padding:"10px 12px",
+          borderRadius:10,
+          border:"1px solid #ddd",
+          fontSize:15,
+          boxSizing:"border-box"
+        }}
+      />
+    </div>
+
+    {/* Flow / Period */}
+    
           <div style={{background:"#fff",borderRadius:14,border:"1px solid #eee",padding:16,marginBottom:14}}>
             <div style={{fontSize:13,fontWeight:700,color:"#333",marginBottom:12}}>🩸 Period flow today</div>
             <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
