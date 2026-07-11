@@ -227,7 +227,6 @@
     }
 
 function CalendarTab() {
-
   const today = new Date();
 
   const year = today.getFullYear();
@@ -236,43 +235,90 @@ function CalendarTab() {
   const monthName = today.toLocaleString("default", {
     month: "long"
   });
+
   const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  const firstDay = new Date(year, month, 1);
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  let startDay = firstDay.getDay();
+
+  // Convert Sunday-first to Monday-first
+  startDay = startDay === 0 ? 6 : startDay - 1;
+
+  const calendarDays = [];
+
+  // Empty boxes before the first day
+  for (let i = 0; i < startDay; i++) {
+    calendarDays.push(null);
+  }
+
+  // Add every day of the month
+  for (let day = 1; day <= daysInMonth; day++) {
+    calendarDays.push(day);
+  }
 
   return (
     <div
       style={{
-        background:"#fff",
-        borderRadius:14,
-        padding:20,
-        border:"1px solid #eee"
+        background: "#fff",
+        borderRadius: 14,
+        padding: 20,
+        border: "1px solid #eee"
       }}
     >
-
       <h2
         style={{
-          textAlign:"center",
-          marginBottom:20
+          textAlign: "center",
+          marginBottom: 20
         }}
       >
         🌸 {monthName} {year}
       </h2>
 
-<div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(7, 1fr)",
-    gap: 8,
-    textAlign: "center"
-  }}
->
+      {/* Weekday headings */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(7, 1fr)",
+          gap: 8,
+          textAlign: "center",
+          marginBottom: 10
+        }}
+      >
         {weekdays.map(day => (
           <div
             key={day}
             style={{
               fontSize: 13,
               fontWeight: 700,
-              color: "#666",
-              paddingBottom: 8
+              color: "#666"
+            }}
+          >
+            {day}
+          </div>
+        ))}
+      </div>
+
+      {/* Calendar days */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(7, 1fr)",
+          gap: 8
+        }}
+      >
+        {calendarDays.map((day, index) => (
+          <div
+            key={index}
+            style={{
+              height: 40,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 8,
+              background: "#f7f7f7"
             }}
           >
             {day}
