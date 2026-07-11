@@ -265,20 +265,21 @@ function CalendarTab() {
     textAlign: "center"
   }}
 >
-  {weekdays.map(day => (
-    <div
-      key={day}
-      style={{
-        fontSize: 13,
-        fontWeight: 700,
-        color: "#666",
-        paddingBottom: 8
-      }}
-    >
-      {day}
+        {weekdays.map(day => (
+          <div
+            key={day}
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              color: "#666",
+              paddingBottom: 8
+            }}
+          >
+            {day}
+          </div>
+        ))}
+      </div>
     </div>
-  ))}
-    
   );
 }
     
