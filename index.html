@@ -227,16 +227,18 @@
     }
 
 function CalendarTab() {
-  const today = new Date();
+  const [displayDate, setDisplayDate] = React.useState(new Date());
 
-  const year = today.getFullYear();
-  const month = today.getMonth();
+  const year = displayDate.getFullYear();
+  const month = displayDate.getMonth();
 
-  const monthName = today.toLocaleString("default", {
+  const monthName = displayDate.toLocaleString("default", {
     month: "long"
   });
 
   const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  const currentDate = new Date();
 
   const firstDay = new Date(year, month, 1);
 
@@ -268,14 +270,47 @@ function CalendarTab() {
         border: "1px solid #eee"
       }}
     >
-      <h2
+      {/* Header */}
+      <div
         style={{
-          textAlign: "center",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
           marginBottom: 20
         }}
       >
-        🌸 {monthName} {year}
-      </h2>
+        <button
+          onClick={() => {
+            setDisplayDate(new Date(year, month - 1, 1));
+          }}
+          style={{
+            fontSize: 22,
+            border: "none",
+            background: "transparent",
+            cursor: "pointer"
+          }}
+        >
+          ◀
+        </button>
+
+        <h2 style={{ margin: 0 }}>
+          🌸 {monthName} {year}
+        </h2>
+
+        <button
+          onClick={() => {
+            setDisplayDate(new Date(year, month + 1, 1));
+          }}
+          style={{
+            fontSize: 22,
+            border: "none",
+            background: "transparent",
+            cursor: "pointer"
+          }}
+        >
+          ▶
+        </button>
+      </div>
 
       {/* Weekday headings */}
       <div
@@ -309,21 +344,31 @@ function CalendarTab() {
           gap: 8
         }}
       >
-        {calendarDays.map((day, index) => (
-          <div
-            key={index}
-            style={{
-              height: 40,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 8,
-              background: "#f7f7f7"
-            }}
-          >
-            {day}
-          </div>
-        ))}
+        {calendarDays.map((day, index) => {
+          const isToday =
+            day &&
+            year === currentDate.getFullYear() &&
+            month === currentDate.getMonth() &&
+            day === currentDate.getDate();
+
+          return (
+            <div
+              key={index}
+              style={{
+                height: 40,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 8,
+                background: isToday ? "#f8bfd3" : "#f7f7f7",
+                color: isToday ? "#fff" : "#333",
+                fontWeight: isToday ? "700" : "400"
+              }}
+            >
+              {day}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
