@@ -228,6 +228,7 @@
 
 function CalendarTab() {
   const [displayDate, setDisplayDate] = React.useState(new Date());
+  const [selectedDay, setSelectedDay] = React.useState(null);
 
   const year = displayDate.getFullYear();
   const month = displayDate.getMonth();
@@ -241,22 +242,17 @@ function CalendarTab() {
   const currentDate = new Date();
 
   const firstDay = new Date(year, month, 1);
-
   const daysInMonth = new Date(year, month + 1, 0).getDate();
 
   let startDay = firstDay.getDay();
-
-  // Convert Sunday-first to Monday-first
   startDay = startDay === 0 ? 6 : startDay - 1;
 
   const calendarDays = [];
 
-  // Empty boxes before the first day
   for (let i = 0; i < startDay; i++) {
     calendarDays.push(null);
   }
 
-  // Add every day of the month
   for (let day = 1; day <= daysInMonth; day++) {
     calendarDays.push(day);
   }
@@ -282,6 +278,7 @@ function CalendarTab() {
         <button
           onClick={() => {
             setDisplayDate(new Date(year, month - 1, 1));
+            setSelectedDay(null);
           }}
           style={{
             fontSize: 22,
@@ -300,6 +297,7 @@ function CalendarTab() {
         <button
           onClick={() => {
             setDisplayDate(new Date(year, month + 1, 1));
+            setSelectedDay(null);
           }}
           style={{
             fontSize: 22,
@@ -336,7 +334,7 @@ function CalendarTab() {
         ))}
       </div>
 
-      {/* Calendar days */}
+      {/* Calendar */}
       <div
         style={{
           display: "grid",
@@ -354,13 +352,20 @@ function CalendarTab() {
           return (
             <div
               key={index}
+              onClick={() => day && setSelectedDay(day)}
               style={{
                 height: 40,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 borderRadius: 8,
-                background: isToday ? "#f8bfd3" : "#f7f7f7",
+                cursor: day ? "pointer" : "default",
+                background:
+                  selectedDay === day
+                    ? "#d8b4fe"
+                    : isToday
+                    ? "#f8bfd3"
+                    : "#f7f7f7",
                 color: isToday ? "#fff" : "#333",
                 fontWeight: isToday ? "700" : "400"
               }}
@@ -370,6 +375,26 @@ function CalendarTab() {
           );
         })}
       </div>
+
+      {selectedDay && (
+        <div
+          style={{
+            marginTop: 20,
+            padding: 16,
+            borderRadius: 12,
+            background: "#faf5ff",
+            border: "1px solid #e9d5ff"
+          }}
+        >
+          <h3 style={{ marginTop: 0 }}>
+            📅 {selectedDay} {monthName} {year}
+          </h3>
+
+          <p>
+            Eventually your mood, symptoms and notes will appear here.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
