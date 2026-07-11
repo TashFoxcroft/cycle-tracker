@@ -523,6 +523,9 @@ function CalendarTab() {
       const [saveStatus, setSaveStatus] = useState(null);
       const [loaded, setLoaded] = useState(false);
       const [activeTab, setActiveTab] = useState("home");
+
+      const [logs, setLogs] = useState({});
+      
      const [selectedLogDate, setSelectedLogDate] = useState(
     toDateKey(new Date())
 );
