@@ -1,4 +1,4 @@
-    function toDateKey(date) {
+function toDateKey(date) {
       const d = new Date(date);
       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
@@ -60,4 +60,51 @@
     function formatDate(dateStr) {
       const d = new Date(dateStr + "T00:00:00");
       return d.toLocaleDateString("en-ZA", { day:"numeric", month:"short", year:"numeric" });
+    }
+
+    // Finds the first day of each logged period: a day with flow logged
+    // where the previous day had no flow logged. Returns date keys, oldest first.
+    function getPeriodStarts(logs) {
+      const flowDays = Object.keys(logs)
+        .filter(key => logs[key] && logs[key].flow != null)
+        .sort();
+
+      const starts = [];
+      flowDays.forEach(key => {
+        const d = new Date(key + "T00:00:00");
+        d.setDate(d.getDate() - 1);
+        const prevKey = toDateKey(d);
+        if (!flowDays.includes(prevKey)) starts.push(key);
+      });
+
+      return starts;
+    }
+
+    // Calculates average cycle length from real logged period starts.
+    // Uses at most the last 6 cycles, and ignores implausible gaps
+    // (e.g. missed logging months) so one bad gap doesn't skew the average.
+    function getAutoCycleStats(logs) {
+      const starts = getPeriodStarts(logs);
+      const mostRecentStart = starts.length ? starts[starts.length - 1] : null;
+
+      if (starts.length < 2) {
+        return { averageCycleLength: null, cycleCount: 0, mostRecentStart };
+      }
+
+      const diffs = [];
+      for (let i = 1; i < starts.length; i++) {
+        const a = new Date(starts[i - 1] + "T00:00:00");
+        const b = new Date(starts[i] + "T00:00:00");
+        const days = Math.round((b - a) / 86400000);
+        if (days >= 15 && days <= 60) diffs.push(days);
+      }
+
+      const recentDiffs = diffs.slice(-6);
+
+      if (recentDiffs.length === 0) {
+        return { averageCycleLength: null, cycleCount: 0, mostRecentStart };
+      }
+
+      const avg = Math.round(recentDiffs.reduce((sum, d) => sum + d, 0) / recentDiffs.length);
+      return { averageCycleLength: avg, cycleCount: recentDiffs.length, mostRecentStart };
     }
