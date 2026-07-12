@@ -53,6 +53,43 @@
     function getDayOfCycle(lastPeriodStart, cycleLength) {
       const start = new Date(lastPeriodStart);
       const today = new Date();
+      // ---------- Cycle Predictions ----------
+
+const predictedDays = [];
+const fertileDays = [];
+
+const lastStart = new Date(lastPeriod + "T00:00:00");
+
+// Predicted next period (5 days)
+const nextPeriod = new Date(lastStart);
+nextPeriod.setDate(nextPeriod.getDate() + cycleLength);
+
+for (let i = 0; i < 5; i++) {
+  const d = new Date(nextPeriod);
+  d.setDate(d.getDate() + i);
+
+  predictedDays.push(
+    `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`
+  );
+}
+
+// Ovulation
+const ovulation = new Date(lastStart);
+ovulation.setDate(ovulation.getDate() + Math.round(cycleLength / 2));
+
+const ovulationKey =
+`${ovulation.getFullYear()}-${String(ovulation.getMonth()+1).padStart(2,"0")}-${String(ovulation.getDate()).padStart(2,"0")}`;
+
+// Fertile window
+for (let i = -2; i <= 2; i++) {
+
+  const d = new Date(ovulation);
+  d.setDate(d.getDate() + i);
+
+  fertileDays.push(
+    `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`
+  );
+}
       // Predicted next period
 const predictedStart = new Date(lastPeriod + "T00:00:00");
 predictedStart.setDate(predictedStart.getDate() + cycleLength);
