@@ -53,6 +53,21 @@
     function getDayOfCycle(lastPeriodStart, cycleLength) {
       const start = new Date(lastPeriodStart);
       const today = new Date();
+      // Predicted next period
+const predictedStart = new Date(lastPeriod + "T00:00:00");
+predictedStart.setDate(predictedStart.getDate() + cycleLength);
+
+// Predicted period lasts 5 days
+const predictedDays = [];
+
+for (let i = 0; i < 5; i++) {
+  const d = new Date(predictedStart);
+  d.setDate(d.getDate() + i);
+
+  predictedDays.push(
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+  );
+}
       today.setHours(0,0,0,0); start.setHours(0,0,0,0);
       const diffDays = Math.floor((today - start) / 86400000);
       return Math.max(1, (diffDays % cycleLength) + 1);
@@ -281,6 +296,8 @@ function TodayTab({
 
 function CalendarTab({
   logs,
+  lastPeriod,
+  cycleLength,
   selectedLogDate,
   setSelectedLogDate,
   setActiveTab
@@ -805,14 +822,14 @@ function CalendarTab({
               />
             </>}
 
-            {/* CALENDAR TAB */}
-            {activeTab==="calendar" && (
-             <CalendarTab
+            <CalendarTab
               logs={logs}
-               selectedLogDate={selectedLogDate}
+              lastPeriod={lastPeriod}
+              cycleLength={cycleLength}
+              selectedLogDate={selectedLogDate}
               setSelectedLogDate={setSelectedLogDate}
               setActiveTab={setActiveTab}
-/>
+            />
             )}
             
             {/* HISTORY TAB */}
