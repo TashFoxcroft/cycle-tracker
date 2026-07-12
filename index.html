@@ -972,15 +972,18 @@ function CalendarTab({
               />
             </>}
 
-           <CalendarTab
-              logs={logs}
-              selectedLogDate={selectedLogDate}
-              setSelectedLogDate={setSelectedLogDate}
-              setActiveTab={setActiveTab}
-              lastPeriod={lastPeriod}
-              cycleLength={cycleLength}
-            />
+           {/* CALENDAR TAB */}
+            {activeTab==="calendar" && (
+              <CalendarTab
+                logs={logs}
+                selectedLogDate={selectedLogDate}
+                setSelectedLogDate={setSelectedLogDate}
+                setActiveTab={setActiveTab}
+                lastPeriod={lastPeriod}
+                cycleLength={cycleLength}
+              />
             )}
+
             
             {/* HISTORY TAB */}
             {activeTab==="history" && <>
