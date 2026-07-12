@@ -51,30 +51,50 @@
     }
 
     function getDayOfCycle(lastPeriodStart, cycleLength) {
-  const start = new Date(lastPeriodStart);
-  const today = new Date();
-
-  const diff = Math.floor((today - start) / 86400000);
-
-  return ((diff % cycleLength) + cycleLength) % cycleLength + 1;
-}
-// Fertile window = 5 days before ovulation + ovulation day
-const fertileDays = [];
-
-for (let i = -5; i <= 0; i++) {
-
-  const d = new Date(ovulationDate);
-  d.setDate(d.getDate() + i);
-
-  fertileDays.push(
-    `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`
-  );
-
-}
-      
-      today.setHours(0,0,0,0); start.setHours(0,0,0,0);
+      const start = new Date(lastPeriodStart);
+      const today = new Date();
+      start.setHours(0,0,0,0); today.setHours(0,0,0,0);
       const diffDays = Math.floor((today - start) / 86400000);
-      return Math.max(1, (diffDays % cycleLength) + 1);
+      return ((diffDays % cycleLength) + cycleLength) % cycleLength + 1;
+    }
+
+    // Predicted period days, fertile window, and ovulation day for a given displayed month
+    function getCycleCalendarData(lastPeriod, cycleLength, year, month) {
+      const predictedDays = new Set();
+      const fertileDays = new Set();
+      let ovulationKey = null;
+
+      const cycleStartBase = new Date(lastPeriod + "T00:00:00");
+      cycleStartBase.setHours(0,0,0,0);
+
+      const monthStart = new Date(year, month, 1);
+      const monthEnd = new Date(year, month + 1, 0);
+
+      const diffToMonthStart = Math.floor((monthStart - cycleStartBase) / 86400000);
+      const cyclesBack = Math.floor(diffToMonthStart / cycleLength) - 1;
+
+      for (let c = cyclesBack; c <= cyclesBack + 3; c++) {
+        const cycleStart = new Date(cycleStartBase);
+        cycleStart.setDate(cycleStart.getDate() + c * cycleLength);
+
+        for (let i = 0; i < 5; i++) {
+          const d = new Date(cycleStart);
+          d.setDate(d.getDate() + i);
+          if (d >= monthStart && d <= monthEnd) predictedDays.add(toDateKey(d));
+        }
+
+        const ovDate = new Date(cycleStart);
+        ovDate.setDate(ovDate.getDate() + Math.round(cycleLength * 0.5));
+        if (ovDate >= monthStart && ovDate <= monthEnd) ovulationKey = toDateKey(ovDate);
+
+        for (let i = -5; i <= 0; i++) {
+          const d = new Date(ovDate);
+          d.setDate(d.getDate() + i);
+          if (d >= monthStart && d <= monthEnd) fertileDays.add(toDateKey(d));
+        }
+      }
+
+      return { predictedDays: [...predictedDays], fertileDays: [...fertileDays], ovulationKey };
     }
 
     function getPhase(day, cycleLength) {
@@ -319,6 +339,11 @@ function CalendarTab({
   const weekdays = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 
   const today = new Date();
+
+  const { predictedDays, fertileDays, ovulationKey } = React.useMemo(
+    () => getCycleCalendarData(lastPeriod, cycleLength, year, month),
+    [lastPeriod, cycleLength, year, month]
+  );
 
   const firstDay = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
