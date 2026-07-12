@@ -68,6 +68,28 @@ for (let i = 0; i < 5; i++) {
     `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
   );
 }
+
+// Ovulation is approximately 14 days before the next predicted period
+const ovulationDate = new Date(predictedStart);
+ovulationDate.setDate(ovulationDate.getDate() - 14);
+
+const ovulationKey =
+  `${ovulationDate.getFullYear()}-${String(ovulationDate.getMonth()+1).padStart(2,"0")}-${String(ovulationDate.getDate()).padStart(2,"0")}`;
+
+// Fertile window = 5 days before ovulation + ovulation day
+const fertileDays = [];
+
+for (let i = -5; i <= 0; i++) {
+
+  const d = new Date(ovulationDate);
+  d.setDate(d.getDate() + i);
+
+  fertileDays.push(
+    `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`
+  );
+
+}
+      
       today.setHours(0,0,0,0); start.setHours(0,0,0,0);
       const diffDays = Math.floor((today - start) / 86400000);
       return Math.max(1, (diffDays % cycleLength) + 1);
@@ -454,6 +476,11 @@ function CalendarTab({
 
           const isSelected =
             key===selectedLogDate;
+        const isPredictedPeriod = predictedDays.includes(key);
+        
+        const isOvulation = key === ovulationKey;
+        
+        const isFertile = fertileDays.includes(key);
 
           return(
 
@@ -464,12 +491,18 @@ function CalendarTab({
                 height:55,
                 borderRadius:10,
                 cursor:"pointer",
-                background:
-                  isSelected
-                    ? "#E1BEE7"
-                    : isToday
-                    ? "#F8BBD0"
-                    : "#fafafa",
+               background:
+                isSelected
+                  ? "#E1BEE7"
+                  : isToday
+                  ? "#F8BBD0"
+                  : isOvulation
+                  ? "#FFE082"
+                  : isFertile
+                  ? "#E8F5E9"
+                  : isPredictedPeriod
+                  ? "#FCE4EC"
+                  : "#fafafa",
                 border:
                   isToday
                     ? "2px solid #C2185B"
@@ -562,6 +595,123 @@ function CalendarTab({
       </div>
 
       {/* Summary */}
+
+            {/* Calendar Legend */}
+
+      <div
+        style={{
+          marginTop: 20,
+          padding: 16,
+          background: "#fcfcfc",
+          border: "1px solid #eee",
+          borderRadius: 12
+        }}
+      >
+
+        <div
+          style={{
+            fontWeight: 700,
+            fontSize: 14,
+            marginBottom: 12,
+            color: "#444"
+          }}
+        >
+          Your Calendar Guide
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 10
+          }}
+        >
+
+          {/* Predicted Period */}
+
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <div
+              style={{
+                width:18,
+                height:18,
+                borderRadius:5,
+                background:"#FCE4EC",
+                border:"1px solid #F8BBD0"
+              }}
+            />
+            <span style={{fontSize:13}}>Predicted Period</span>
+          </div>
+
+          {/* Fertile */}
+
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <div
+              style={{
+                width:18,
+                height:18,
+                borderRadius:5,
+                background:"#E8F5E9",
+                border:"1px solid #A5D6A7"
+              }}
+            />
+            <span style={{fontSize:13}}>Fertile Window</span>
+          </div>
+
+          {/* Ovulation */}
+
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <div
+              style={{
+                width:18,
+                height:18,
+                borderRadius:5,
+                background:"#FFE082",
+                border:"1px solid #FFD54F"
+              }}
+            />
+            <span style={{fontSize:13}}>Ovulation</span>
+          </div>
+
+          {/* Today */}
+
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <div
+              style={{
+                width:18,
+                height:18,
+                borderRadius:5,
+                background:"#fff",
+                border:"2px solid #C2185B"
+              }}
+            />
+            <span style={{fontSize:13}}>Today</span>
+          </div>
+
+          {/* Selected */}
+
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <div
+              style={{
+                width:18,
+                height:18,
+                borderRadius:5,
+                background:"#E1BEE7",
+                border:"1px solid #CE93D8"
+              }}
+            />
+            <span style={{fontSize:13}}>Selected Day</span>
+          </div>
+
+          {/* Logged Data */}
+
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <span style={{fontSize:16}}>🩸 😊 ⚡ 🤒 📝</span>
+            <span style={{fontSize:13}}>Logged Data</span>
+          </div>
+
+        </div>
+
+      </div>
 
       {selectedLogDate && logs[selectedLogDate] && (
 
