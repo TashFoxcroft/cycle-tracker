@@ -467,7 +467,8 @@ function CalendarTab({
 
               <div
                 style={{
-                  fontWeight:isToday?700:500,
+                  fontWeight:isToday ? 700 : 600,
+                            fontSize:15,
                   color:isToday?"white":"#333"
                 }}
               >
@@ -498,11 +499,38 @@ function CalendarTab({
                       />
                   }
 
-                  {log.mood &&
-                    <span style={{fontSize:10}}>
-                      {log.mood}
-                    </span>
-                  }
+                  {log.mood && (
+  <span style={{ fontSize: 10 }}>
+    {log.mood}
+  </span>
+)}
+
+{log.energy != null && (
+  <span
+    title="Energy logged"
+    style={{ fontSize: 9 }}
+  >
+    ⚡
+  </span>
+)}
+
+{log.symptoms?.length > 0 && (
+  <span
+    title="Symptoms logged"
+    style={{ fontSize: 9 }}
+  >
+    🤒
+  </span>
+)}
+
+{log.notes && (
+  <span
+    title="Notes"
+    style={{ fontSize: 9 }}
+  >
+    📝
+  </span>
+)}
 
                 </div>
 
