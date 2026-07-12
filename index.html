@@ -318,11 +318,11 @@ function TodayTab({
 
 function CalendarTab({
   logs,
-  lastPeriod,
-  cycleLength,
   selectedLogDate,
   setSelectedLogDate,
-  setActiveTab
+  setActiveTab,
+  lastPeriod,
+  cycleLength
 }) {
 
   const [displayDate, setDisplayDate] = React.useState(new Date());
@@ -972,13 +972,13 @@ function CalendarTab({
               />
             </>}
 
-            <CalendarTab
+           <CalendarTab
               logs={logs}
-              lastPeriod={lastPeriod}
-              cycleLength={cycleLength}
               selectedLogDate={selectedLogDate}
               setSelectedLogDate={setSelectedLogDate}
               setActiveTab={setActiveTab}
+              lastPeriod={lastPeriod}
+              cycleLength={cycleLength}
             />
             )}
             
