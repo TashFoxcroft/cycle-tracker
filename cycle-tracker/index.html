@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#C2185B" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="CycleTrack" />
+  <title>CycleTrack</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Shared data and helpers, must load first -->
+  <script type="text/babel" src="js/constants.js"></script>
+  <script type="text/babel" src="js/utils.js"></script>
+
+  <!-- Components, in dependency order -->
+  <script type="text/babel" src="js/components/CycleWheel.js"></script>
+  <script type="text/babel" src="js/components/PhaseCard.js"></script>
+  <script type="text/babel" src="js/components/TodayTab.js"></script>
+  <script type="text/babel" src="js/components/CalendarTab.js"></script>
+  <script type="text/babel" src="js/components/HistoryTab.js"></script>
+
+  <!-- Main app, must load last -->
+  <script type="text/babel" src="js/App.js"></script>
+</body>
+</html>
